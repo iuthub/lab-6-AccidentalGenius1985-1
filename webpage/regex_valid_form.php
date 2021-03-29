@@ -4,6 +4,10 @@
 	$text="";
 	$replaceText="";
 	$replacedText="";
+	$wsRemovedText="";
+	$numsOnly="";
+	$nlRemovedText="";
+	$txtInParenthesis="";
 
 	$match="Not checked yet.";
 
@@ -13,6 +17,12 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 	$replaceText=$_POST["replaceText"];
 
 	$replacedText=preg_replace($pattern, $replaceText, $text);
+    $wsRemovedText=preg_replace("/ /","",$text);
+    $numsOnly=preg_replace("/[^\d\.,]*/","",$text);
+    $nlRemovedText=preg_replace("/\n/","",$text);
+    $txtInParenthesis=preg_replace("/\].*\[/","",$text);
+    $txtInParenthesis=preg_replace("/.*\[/","",$txtInParenthesis);
+    $txtInParenthesis=preg_replace("/\].*/","",$txtInParenthesis);
 
 	if(preg_match($pattern, $text)) {
 						$match="Match!";
@@ -47,6 +57,18 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
 			<dt>Replaced Text</dt>
 			<dd> <code><?=	$replacedText ?></code></dd>
+
+            <dt>Removed whitespaces</dt>
+            <dd> <code><?=	$wsRemovedText ?></code></dd>
+
+            <dt>Numericals only</dt>
+            <dd> <code><?=	$numsOnly ?></code></dd>
+
+            <dt>New lines removed</dt>
+            <dd> <code><?=	$nlRemovedText ?></code></dd>
+
+            <dt>Text extracted from parenthesis </dt>
+            <dd> <code><?=	$txtInParenthesis ?></code></dd>
 
 			<dt>&nbsp;</dt>
 			<dd><input type="submit" value="Check"></dd>
